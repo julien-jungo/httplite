@@ -1,0 +1,32 @@
+plugins {
+  id 'java'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation(project(':httplite'))
+}
+
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(24)
+  }
+}
+
+tasks.register('runServer', JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'com.julienjungo.httplite.example.Server'
+}
+
+tasks.register('runClient', JavaExec) {
+  classpath = sourceSets.main.runtimeClasspath
+  mainClass = 'com.julienjungo.httplite.example.Client'
+}
+
+tasks.register('createKeyAndTruststore', Exec) {
+  def outputDir = file('src/main/resources/com/julienjungo/httplite/example')
+  commandLine 'sh', 'scripts/create-key-and-truststore.sh', outputDir.absolutePath
+}
